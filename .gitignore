@@ -1,2 +1,7 @@
 *.txt
 .ipynb*
+Foursquare_Key.csv
+*.aux
+*.log
+*.gz
+
