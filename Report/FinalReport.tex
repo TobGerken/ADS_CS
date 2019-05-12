@@ -93,6 +93,11 @@ To learn more about individual neighborhoods below the district level, we use Be
 
 We chose K-Means clustering, one of the most common and computationally cheap clustering algorithms for simplicity. K-Means clustering requires \emph{a-priori} specification of the number of clusters. Given the high number of categories, which leads to sparseness of the data-set, and the fact that we expect neighborhood clusters to not fully separate, we set the number of clusters $K=4$. The K-Means clustering is executed using scikit-learn \cite{sklearn}. We use the venue categories as features for the clustering. Because venue-category is a categorical variable, we create a dummy-variable for each venue category and subsequently normalize the features in each neighborhood to one. 
 
+\subsubsection{Trending Venues}
+
+We used IBM Watson Studio to deploy a script that used the Foursquare API's trending functionality to generate a list of trending-venues. The code was run for using the previously noted gridded sampling approach. Returned results were saved to file for later analysis.
+
+The code was run hourly  from Thursday May--2--2019 00:00  to Monday May--7--2019 4:00 Berlin time providing information about trending venues for several workdays and a weekend. 
 
 \subsubsection{Tools}
 Data wrangling is performed in Python using Pandas \cite{pd} and Shapely \cite{shapely} (for geospatial calculations).
@@ -149,11 +154,62 @@ The clustering results in a 4 clusters. Based on the dominant venues in each clu
 	\item[Fourth cluster -  The city's edge:] This peripheral cluster (green) lacks the attractions of the third cluster. Venues such as parks, fairs, farms indicate lower density. Hotels, forests and lakes indicating recreational activities are largely missing.  
 \end{description}
 
+\subsection{Trending Venues}
 
+A total of 350 trending venues were identified between Thursday May 2, 2019 00:00 and Tuesday May 7, 2019 06:00 Berlin time (Fig.~\ref{fig:TrendingM}). Most venues were located in the city center, but there are also a few locations outside the city center that trended during this time. 
+
+It can clearly be seen that the number of trending venues follows a clear diurnal patter with, most activity taking place during business hours and the evenings, indicating that Foursquare API's trending feature is indeed capable of detecting the ebb and flow of activity that makes up the Pulse of Berlin (Fig.~\ref{fig:TrendingT}). 
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=12cm]{../Figures/TrendingMap.PNG}
+\caption{A total of 350 trending venues were identified between Thursday May 2, 2019 00:00 and Tuesday May 7, 2019 06:00 Berlin time.}\label{fig:TrendingM}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=12cm]{../Figures/TrendingTimeB.PNG}
+\caption{The number of trending venues follows a clear diurnal pattern.}
+\label{fig:TrendingT}
+\end{figure}
+
+In total, 51 distinct venue categories as defined by Fousquare were returned as trending. To facilitate interpretation, these venue types were manually grouped into similar categories. This was also necessary, since some venue categories were nearly identical to each other (e.g. \emph{Airports} and \emph{Airport Terminals}). Notably, transit hubs such as airports and train stations were among the most popular venues \ref{fig:TrendingV}). Similarly, events and outdoor spaces were also very popular. Surprisingly, bars and nightclub venues featured less heavily in the data-set, despite the data-set covering a weekend period. 
+
+The Foursquare API returned a few "surprising" venues. For example, two advertising agencies were featured prominently in the trending data-set. Similarly, the API identified a prison and an assisted living facility as trending during the time period. However, closer inspection revealed that these are due to mis-classification. The prison Hohensh\"onhausen is a museum and memorial dedicated to victims of the East-German secret police and the assisted living facility was identified as \emph{rp19wg}, which was the hash-tag of the re:publica 2019, a conference/event about digital media and society held in Berlin on May 6-9, 2019. 
+
+The re:publica 2019 event can also clearly be detected in the time-series of trending venues (Fig.~\ref{fig:TrendingVT}). While some venue categories, such as transporation hubs were popular during all times, except the very early morning hours, other venue types, such as outdoor and event venues were mostly popular during the weekend.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=12cm]{../Figures/TrendingVenues.PNG}
+\caption{Transit hubs, event spaces were the most popular venues.}\label{fig:TrendingV}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=12cm]{../Figures/TrendingTime.PNG}
+\caption{The popularity of venues varies with time.}\label{fig:TrendingVT}
+\end{figure}
+\clearpage
 \section{Discussion}
+This work applied three data-driven approaches to explore the \emph{Pulse of Berlin}. 
 
+First, we showed that district level demographics and business activity were closely related, with younger and possibly more affluent people living near centers of commercial activity. At the same time, is is unclear whether this is a causal relation, or whether for example both businesses and younger people respond to similar attractors, such as urban centers or spaces of cultural and touristic value. 
+
+Second, aggregated to the neighborhood level, Foursquare venue data was successfully used to categorize Berlin's neighborhoods into different clusters. The results showed that Berlin could be separated into urban core and peripheral neighborhoods, which likely serve different roles as living and recreation spaces.
+
+Lastly, we explored Berlin as a dynamic space in time with its unique ebb and flow of activity. Using Foursquare's data it was possible to identify a large public event that took place in Berlin - the re:publica 2019 digital conference. Similarly, we could observe that transit and airports never sleep and are the beating heart of the city. 
+
+At the same time, we identified several limitations in this work, which are necessary to be discussed. 
+While there is an association of younger demographics with the density of business venues, it is unwise to infer causation from this without further in-depth analysis. Despite the wealth of data available from Foursquare and other open data sources, not all necessary data to infer causation may be available. Similarly, Foursquare's data may not always be reliable as seen by the mis-attribution of the re:publica hashtag to a nursing facility. In general Foursquare's data may skew towards business venues that do not adequately capture all portions of life in a city. Without knowing how such data is aggregated caution should be taken to assume that the data-set is inclusive of all populations. For example, the re:publica event, frequented by digital natives featured heavily in the data-set of trending venues. Similarly, two advertising agencies -- presumably with media-savvy employees -- were also featured in the data-set, which seems like a stark over-representation compared to the total number of businesses and the role of advertising in the economy.  
 
 \section{Conclusions}
+
+This analysis present a first exploration to use a dynamic data-set to capture the hustle and bustle of a dynamic city -- Berlin. Based on the data used, we clearly demonstrated the utility of location data in combination with other data-sources to learn more about commercial activity at a surprisingly high temporal and spatial granularity, which could be further exploited to aid in business decisions. For example activity data of popular venues could be used for decision on marketing of opening new venues in popular spots. 
+
 
 \begin{thebibliography}{9}
 \bibitem{SBA} 
