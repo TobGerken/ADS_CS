@@ -1,4 +1,6 @@
-![The Pulse of Berlin](Figures/trending.gif)
+## The Pulse of Berlin
+
+![alt text](https://github.com/TobGerken/ADS_CS/blob/master/Figures/Trending1.gif)
 
 ### See the final report here:
 [Final Report](https://nbviewer.jupyter.org/github/TobGerken/ADS_CS/blob/master/Report/FinalReport.pdf)
